@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InGenifold Research LLC</title>
+    <style>
+      /* Basic reset */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #1f1f1f;
+        color: #eee;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        text-align: center;
+      }
+
+      .container {
+        max-width: 600px;
+        padding: 1rem;
+      }
+
+      /* Logo wrapper to overlay ™ */
+      .logo-wrapper {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .logo-wrapper img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .trademark {
+        position: absolute;
+        top: 4%;
+        right: 2%;
+        font-size: 2rem;
+        font-weight: 900;
+        color: #dcdcdc;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+        pointer-events: none; /* ensure it doesn't hijack clicks */
+      }
+
+      h1 {
+        margin-top: 1rem;
+        font-size: 2rem;
+        font-weight: 600;
+      }
+
+      .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-btn {
+        background-color: #F57000;
+        border: none;
+        color: #ffffff;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: background 0.25s ease-in-out;
+      }
+
+      .nav-btn:hover {
+        background-color: #9E4800;
+      }
+
+      /* Responsive tweaks */
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 1.5rem;
+        }
+        .nav-btn {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <!-- Replace "logo.png" with the actual path if you place the file elsewhere -->
+      <div class="logo-wrapper">
+        <img src="InGenifold-Swirl-Transparent.png" alt="InGenifold Research Logo" />
+        <span class="trademark">™</span>
+      </div>
+      <h1>InGenifold Research LLC</h1>
+      <div class="button-group">
+        <button class="nav-btn" onclick="location.href='TestA.html'">Option A</button>
+        <button class="nav-btn" onclick="location.href='TestB.html'">Option B</button>
+      </div>
+    </main>
+  </body>
+</html>
