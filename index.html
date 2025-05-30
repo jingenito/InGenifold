@@ -1,111 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>InGenifold Research LLC</title>
-    <style>
-      /* Basic reset */
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>InGenifold Research LLC</title>
 
-      body {
-        font-family: Arial, Helvetica, sans-serif;
-        background: #1f1f1f;
-        color: #eee;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        text-align: center;
-      }
+<style>
+  html,body{
+    margin:0;
+    padding:0;
+    background:#1F1F1F;
+    color:#eee;
+    font-family:"Inter","Poppins",system-ui,sans-serif;
+    overflow-x:hidden;
+  }
 
-      .container {
-        max-width: 600px;
-        padding: 1rem;
-      }
+  /* ----------  SPLASH  ---------- */
+  .splash{
+    position:fixed;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:#1F1F1F;
+    z-index:10;
+  }
+  .splash.released{
+    position:relative;
+    z-index:1;
+  }
 
-      /* Logo wrapper to overlay ™ */
-      .logo-wrapper {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-        max-width: 400px;
-      }
+  .logo {
+    width:clamp(180px,40vw,275px);
+    will-change:transform;
+  }
+  .brand{
+    margin-top:1rem;
+    font-weight:600;
+    font-size:clamp(1.5rem,4vw,2.6rem);
+    color:#F57000;
+  }
+  .brand .sub{
+    font-weight:400;
+    color:#bbb;
+  }
 
-      .logo-wrapper img {
-        width: 100%;
-        height: auto;
-        display: block;
-      }
+  .tagline{
+    margin-top:.75rem;
+    font-weight:400;
+    font-size:clamp(.9rem,.7rem+.5vw,1.1rem);
+    color:#aaa;
+  }
 
-      .trademark {
-        position: absolute;
-        top: 4%;
-        right: 2%;
-        font-size: 2rem;
-        font-weight: 900;
-        color: #dcdcdc;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
-        pointer-events: none; /* ensure it doesn't hijack clicks */
-      }
+  .cursor{
+    display:inline-block;
+    width:2px;
+    height:1em;
+    background:#aaa;
+    margin-left:2px;
+    animation:blink .8s steps(1) infinite;
+  }
+  @keyframes blink{0%,50%{opacity:1;}50.01%,100%{opacity:0;}}
 
-      h1 {
-        margin-top: 1rem;
-        font-size: 2rem;
-        font-weight: 600;
-      }
+  /* one‑viewport buffer that drives the animation */
+  .buffer{height:100vh;}
 
-      .button-group {
-        display: flex;
-        justify-content: center;
-        gap: 1.5rem;
-        margin-top: 2rem;
-        flex-wrap: wrap;
-      }
+  /* ----------  MAIN CONTENT  ---------- */
+  main{
+    max-width:700px;
+    margin:0 auto;
+    padding:4rem 2rem;
+    opacity:0;
+    transition:opacity .6s ease-in;
+    min-height:100vh;
+  }
+  main.visible{
+    opacity:1;
+  }
+  main h2{
+    color:#F57000;
+    font-size:1.6rem;
+    margin:0 0 1rem;
+  }
+  main p{
+    color:#ccc;
+    line-height:1.7
+  }
 
-      .nav-btn {
-        background-color: #F57000;
-        border: none;
-        color: #ffffff;
-        padding: 0.75rem 1.5rem;
-        font-size: 1rem;
-        border-radius: 0.5rem;
-        cursor: pointer;
-        transition: background 0.25s ease-in-out;
-      }
+  .profile-pic-container {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100%;
+  }
+  .profile-pic-container img {
+    width: 200px; 
+    height: 250px; 
+    border-radius: 50%; 
+    object-fit: cover;
+  }
+</style>
+</head>
+<body>
 
-      .nav-btn:hover {
-        background-color: #9E4800;
-      }
+<section class="splash" id="splash">
+  <img src="InGenifold-Swirl-Transparent.png" alt="logo" class="logo" id="logo">
+  <div class="brand">InGenifold <span class="sub">Research LLC</span></div>
+  <div class="tagline" id="tagline"></div>
+</section>
 
-      /* Responsive tweaks */
-      @media (max-width: 480px) {
-        h1 {
-          font-size: 1.5rem;
-        }
-        .nav-btn {
-          width: 100%;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <main class="container">
-      <!-- Replace "logo.png" with the actual path if you place the file elsewhere -->
-      <div class="logo-wrapper">
-        <img src="InGenifold-Swirl-Transparent.png" alt="InGenifold Research Logo" />
-        <span class="trademark">™</span>
-      </div>
-      <h1>InGenifold Research LLC</h1>
-      <div class="button-group">
-        <button class="nav-btn" onclick="location.href='TestA.html'">Option A</button>
-        <button class="nav-btn" onclick="location.href='TestB.html'">Option B</button>
-      </div>
-    </main>
-  </body>
+<div class="buffer"></div>
+
+<main id="content">
+  <h2>About</h2>
+  <div class="profile-pic-container">
+    <img src="official-profile-pic.jpg" alt="Joseph Ingenito Avatar">
+  </div>
+  <p>
+    Hello, my name is Joseph M. Ingenito. I founded a research-driven consulting practice with a mission to bridge the gap between 
+    advanced mathematics, machine learning, and modern software engineering. My journey began in academic research, where I developed a deep appreciation 
+    for the beauty and rigor of mathematics, but I was always drawn to the question of how those abstract concepts could solve real-world problems. 
+    That curiosity became a mission: to bring mathematical insight and intelligent automation into the heart of business and technology.
+  </p>
+  <p>
+    With a background in full-stack development, AI systems design, and applied research, I help businesses build intelligent, scalable tools 
+    that automate decisions and streamline operations. Over the past several years, I’ve led initiatives ranging from modernizing legacy platforms 
+    to developing AI agents that optimize workforce scheduling and validate transactional integrity at scale.
+  </p>
+  <p>
+    I specialize in .NET and React ecosystems, backend architecture, and deploying custom ML solutions using tools like TensorFlow, Vertex AI, and Gemini APIs. 
+    Whether you're looking to integrate machine learning into your product, modernize your software stack, or architect a smarter workflow from the ground up, 
+    I bring the technical depth and practical experience to make it happen.
+  </p>
+</main>
+
+<script>
+/* ----- tagline types immediately ----- */
+const tag  = document.getElementById('tagline');
+const text = "Driving Innovation Through ML Research & Strategic Tech Consulting.";
+const speed= 35;
+document.addEventListener('DOMContentLoaded',()=>{
+  const cur=document.createElement('span');cur.className='cursor';
+  tag.appendChild(cur);
+  let i=0;(function add(){
+    if(i<text.length){tag.insertBefore(document.createTextNode(text[i++]),cur);
+                       setTimeout(add,speed);}
+  })();
+});
+
+/* ----- scroll‑driven splash animation ----- */
+const logo   = document.getElementById('logo');
+const splash = document.getElementById('splash');
+const main   = document.getElementById('content');
+const buffer = document.querySelector('.buffer');
+const bufferH= buffer.offsetHeight;          // exact buffer height in px
+
+let released=false;
+window.addEventListener('scroll',()=>{
+  if(released) return;
+
+  const y = Math.min(scrollY, bufferH);
+  const p = y / bufferH;                     // progress 0‑1
+
+  /* spin + swell */
+  const scale = 1 + 0.3*Math.sin(p*Math.PI);
+  const rot   = p*360;
+  logo.style.transform=`scale(${scale}) rotate(${rot}deg)`;
+
+  /* release exactly (or slightly after) 100 % */
+  if(p>=1){
+    released = true;
+    logo.style.transform = 'scale(1) rotate(0deg)';
+    splash.classList.add('released');
+    main.classList.add('visible');
+    buffer.remove();               // (optional) tidy the spacer away
+    window.scrollTo({ top: 0 });   // jump back to the top of the page
+  }
+},{passive:true});
+</script>
+</body>
 </html>
