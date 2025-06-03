@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tic Tac Toe with Q-Learning Bot</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #1f1f1f;
+      color: white;
+    }
+    #board {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-gap: 5px;
+      margin: 20px auto 40px auto;
+      justify-content: center;
+    }
+    .cell {
+      width: 100px;
+      height: 100px;
+      font-size: 2em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #434343;
+      cursor: pointer;
+      color: #F57000;
+      border-radius: 0.25em;
+    }
+    .disabled {
+      pointer-events: none;
+      background-color: #434343;
+    }
+    #controls {
+      margin-top: 20px;
+    }
+    #controls button {
+      font-size: 1em;
+      padding: 10px 20px;
+      margin: 5px;
+      background-color: #F57000;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #message {
+      height: 30px;
+      margin-bottom: 10px;
+    }
+    #reset-button {
+        background-color: #F57000;
+        border: none;
+        color: #ffffff;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: background 0.25s ease-in-out;
+      }
+  </style>
+</head>
+<body>
+  <h2>Tic Tac Toe with AI</h2>
+  <div id="controls">
+    <label>Choose your player:</label>
+    <button onclick="selectPlayer(1)">X</button>
+    <button onclick="selectPlayer(-1)">O</button>
+  </div>
+  <div style="margin-top: 10px;">
+    <button id="reset-button" onclick="resetGame()">Reset</button>
+  </div>
+  <div id="message" style="margin-top: 20px;"></div>
+  <div id="board"></div>
+
+  <script>
+    const boardEl = document.getElementById("board");
+    const messageEl = document.getElementById("message");
+
+    let state = Array(9).fill(0);  // 0 = empty, 1 = X, -1 = O
+    let userPlayer = null;
+    let currentPlayer = 1;
+    let gameOver = false;
+
+    let qTable = {};
+
+    fetch("q_table.json")
+      .then(response => response.json())
+      .then(data => {
+        qTable = data;
+        renderBoard();
+      })
+      .catch(err => console.error("Failed to load Q-table:", err));
+
+    function selectPlayer(p) {
+      if (userPlayer !== null) return;
+      userPlayer = p;
+      messageEl.innerText = `You are ${p === 1 ? 'X' : 'O'}`;
+      renderBoard();
+      if (userPlayer !== currentPlayer) aiMove();
+    }
+
+    function resetGame() {
+      state = Array(9).fill(0);
+      userPlayer = null;
+      currentPlayer = 1;
+      gameOver = false;
+      messageEl.innerText = "";
+      renderBoard();
+    }
+
+    function renderBoard() {
+      boardEl.innerHTML = "";
+      for (let i = 0; i < 9; i++) {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        cell.innerText = state[i] === 1 ? "X" : state[i] === -1 ? "O" : "";
+        if (state[i] === 0 && !gameOver && userPlayer === currentPlayer) {
+          cell.onclick = () => handleMove(i);
+        } else {
+          cell.classList.add("disabled");
+        }
+        boardEl.appendChild(cell);
+      }
+    }
+
+    function handleMove(index) {
+      if (state[index] !== 0 || gameOver) return;
+      state[index] = currentPlayer;
+      currentPlayer *= -1;
+      checkGameOver();
+      renderBoard();
+      if (!gameOver) setTimeout(aiMove, 300);
+    }
+
+    function aiMove() {
+      const empty = state.map((v, i) => v === 0 ? i : null).filter(v => v !== null);
+      const stateKey = state.join(",");
+      let bestAction = null;
+      let bestQ = -Infinity;
+      for (let a of empty) {
+        const key = `${stateKey}:${a}`;
+        const q = qTable[key] ?? 0;
+        if (q > bestQ) {
+          bestQ = q;
+          bestAction = a;
+        }
+      }
+      const action = bestAction !== null ? bestAction : empty[Math.floor(Math.random() * empty.length)];
+      state[action] = currentPlayer;
+      currentPlayer *= -1;
+      checkGameOver();
+      renderBoard();
+    }
+
+    function checkGameOver() {
+      const wins = [
+        [0,1,2],[3,4,5],[6,7,8],
+        [0,3,6],[1,4,7],[2,5,8],
+        [0,4,8],[2,4,6]
+      ];
+      for (let [a,b,c] of wins) {
+        if (state[a] !== 0 && state[a] === state[b] && state[b] === state[c]) {
+          messageEl.innerText = `${state[a] === userPlayer ? "You win!" : "AI wins!"}`;
+          gameOver = true;
+          return;
+        }
+      }
+      if (!state.includes(0)) {
+        messageEl.innerText = "It's a draw!";
+        gameOver = true;
+      }
+    }
+  </script>
+</body>
+</html>
